@@ -26,7 +26,7 @@ Tells cabalbot you are reading a paper. Cabalbot will add it to its list, and mi
 `/cabalbot I'm bored`  
 Your friendly cabalbot cares about you, and wants you to live a full, exciting life. You'll be assigned a paper to read, and a short presentation on it will be scheduled in the near future.
 
-`/cabalbot rate paper [url/id] rating [rating]`
+`/cabalbot rate paper [url/id] rating [rating]`  
 Rating Dimensions:  
 Quality of paper  
 Amount of content  
