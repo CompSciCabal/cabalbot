@@ -1,5 +1,5 @@
 import boto3
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Key, Attr
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 table = dynamodb.Table('Diversions')
@@ -13,3 +13,8 @@ def diversion_for_week_paper(date, paperURI):
     """Returns an object containing information for the specified date and paper. date can be 'unscheduled' or of the form 'YYYY-MM-DD'."""
     resp = table.get_item(Key={"WeekOf": date, "Paper": paperURI})
     return resp['Item']
+
+def all_reading_diversions():
+    """Returns a list of all scheduled readings."""
+    resp = table.scan(FilterExpression=Attr("Activity").eq("reading"))
+    return resp['Items']
