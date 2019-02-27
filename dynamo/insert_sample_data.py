@@ -18,7 +18,7 @@ with table.batch_writer() as batch:
         "Attendees": [],
         "Activity": "reading",
         "ActivityDetails": {"Title": u"Prototyping a Functional Language using Higher-Order Logic Programming: A Functional Pearl on Learning the Ways of λProlog/Makam"},
-        "Paper": "http://adam.chlipala.net/papers/MakamlCFP18/MakamlCFP18.pdf",
+        "Paper": "http://adam.chlipala.net/papers/MakamICFP18/MakamICFP18.pdf",
         "Interested": ["dann"],
         "NotInterested": [],
         "HaveRead": [],
