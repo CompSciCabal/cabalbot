@@ -16,3 +16,6 @@ Shows a list of yet unscheduled papers.
 
 `/cabalbot paper for [date]`  
 Shows the paper scheduled for the given date. `date` should be in the format YYYY-mm-dd.
+
+`/cabalbot rate [url] [rating]`  
+Adds a rating for the given paper. See `commands.md` for details on the rating format.

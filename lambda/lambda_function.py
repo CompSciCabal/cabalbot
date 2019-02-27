@@ -132,22 +132,29 @@ def add_read_paper(date, paperURI, user):
             UpdateExpression='SET #readers = :value'
         )
 
-def add_rating_paper(date, paperURI, user, rating):
+def add_rating_paper(paperURI, rating, user):
     """Add a rating for the given paper by the given user."""
-    paper = diversion_for_week_paper(date, paperURI)
-    ratings = paper['Ratings']
-    if (user not in ratings) or (ratings[user] != rating):
-        resp = table.update_item(
-            Key={'WeekOf': date, 'Paper': paperURI},
-            ExpressionAttributeNames={
-                '#ratings': 'Ratings',
-                '#user': user
-            },
-            ExpressionAttributeValues={
-                ':value': rating
-            },
-            UpdateExpression='SET #ratings.#user = :value'
-        )
+    resp = table.scan(FilterExpression=Attr('Paper').eq(paperURI)) # fixme
+    if 'Items' in resp:
+        paper = resp['Items'][0]
+        ratings = paper['Ratings']
+        date = paper['WeekOf']
+        if (user not in ratings) or (ratings[user] != rating):
+            resp = table.update_item(
+                Key={'WeekOf': date, 'Paper': paperURI},
+                ExpressionAttributeNames={
+                    '#ratings': 'Ratings',
+                    '#user': user
+                },
+                ExpressionAttributeValues={
+                    ':value': rating
+                },
+                UpdateExpression='SET #ratings.#user = :value'
+            )
+                
+        return 'cabalbot has noted your rating'
+    else:
+        return ':scream_cat: paper, `' + paperURI + '`, not found!'
 
 def add_availability_week(date, user):
     """Indicate that user is available on the given week."""
@@ -236,6 +243,11 @@ def lambda_handler(event, context):
             response += 'No papers scheduled for the next meeting! :scream_cat:'
         else:
             response += paper_list(papers)
+    elif text[0] == 'rate':
+        if len(text) < 3:
+            response = error_response + '\nexpected to see: `cabalbot rate [paper_url] [rating]`'
+        else:
+            response += add_rating_paper(text[1], text[2], params['user_name'][0])
     elif text[0] == 'papers':
         papers = all_reading_diversions()
         response += paper_list(papers)
