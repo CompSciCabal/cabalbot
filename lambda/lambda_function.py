@@ -197,7 +197,9 @@ def add_unavailability_week(date, user):
 
 def next_friday():
     today = datetime.datetime.today()
-    d = 7 - (today.weekday() - 4)
+    d = 4 - today.weekday()
+    if today.weekday() > 4:
+        d += 7 # friday of the following week
     friday = today + datetime.timedelta(days = d)
     return friday.strftime('%Y-%m-%d')
 
