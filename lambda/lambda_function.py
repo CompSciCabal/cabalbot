@@ -229,8 +229,11 @@ def lambda_handler(event, context):
     response = ''
     attachments = []
 
+    if text[0] == 'please':
+        text.pop(0)
+    
     if len(text) < 1:
-        response = error_response
+        response = ' '
     elif text[0] == 'add' or text[0] == 'eat':
         if len(text) < 2:
             response = error_response + '\nexpected to see: `cabalbot add [paper_url]`'
@@ -264,7 +267,7 @@ def lambda_handler(event, context):
             else:
                 response += paper_list(papers)
     else:
-       response = 'hello <@' + params['user_id'][0] + '>! ' + error_response + '\ncabalbot is still in development :robot_face: :computer: :wrench:'
+       response = 'hello <@' + params['user_id'][0] + '>! ' + error_response + '\ncabalbot is still in development :robot_face: :computer: :wrench:\nPlease see https://github.com/CompSciCabal/cabalbot/edit/master/lambda/lambda_function.py for a list of commands'
     
     return {
         'statusCode': 200,
